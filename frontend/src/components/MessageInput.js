@@ -9,15 +9,27 @@ const MessageInput = ({ chatHistory, setChatHistory, parameters, setLoading }) =
 
     const handleSend = async () => {
         if (!inputValue.trim()) return;
-        const newHistory = [...chatHistory, { role: 'user', content: inputValue }];
+        const newHistory = [...chatHistory, { 
+            role: 'user', 
+            content: inputValue, 
+            timestamp: Date.now() // 添加固定时间戳 
+        }];
         setChatHistory(newHistory);
         setInputValue("");
         setLoading(true);
         try {
             const response = await askAI(newHistory, parameters);
-            setChatHistory([...newHistory, { role: 'assistant', content: response.answer }]);
+            setChatHistory([...newHistory, { 
+                role: 'assistant', 
+                content: response.answer,
+                timestamp: Date.now() // 添加固定时间戳 
+            }]);
         } catch (error) {
-            setChatHistory([...newHistory, { role: 'assistant', content: "请求出错，请重试。" }]);
+            setChatHistory([...newHistory, { 
+                role: 'assistant', 
+                content: "请求出错，请重试。" ,
+                timestamp: Date.now() // 添加固定时间戳 
+            }]);
         }
         setLoading(false);
     };
